@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Allergy Management App - History</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/home.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/history.css') }}"
+    />
+    <!-- Firebase SDKs -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+      // Firebase Configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyAVA7atPi3-3Mw0YLCQWd-T--_v9WP2jJs",
+        authDomain: "allergimate-8a19c.firebaseapp.com",
+        databaseURL: "https://allergimate-8a19c-default-rtdb.firebaseio.com",
+        projectId: "allergimate-8a19c",
+        storageBucket: "allergimate-8a19c.firebasestorage.app",
+        messagingSenderId: "573083521508",
+        appId: "1:573083521508:web:3a9055e91a181cee9e77f1",
+        measurementId: "G-ZXDFZ94C24",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth();
+      const database = getDatabase(app);
+
+      // Fetch and display user profile name
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const userRef = ref(database, `users/${user.uid}`);
+          const snapshot = await get(userRef);
+
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            document.getElementById("profile-name").textContent = `👤 ${
+              userData.name || "User"
+            }`;
+          } else {
+            console.log("User data not found.");
+          }
+        } else {
+          document.getElementById("profile-name").textContent = "👤 Sign In";
+          console.log("No user logged in");
+        }
+      });
+    </script>
+
+    <style>
+      .history-entry {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header class="header">
+      <div class="header-left">
+        <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+        <h2 class="logo">AllergiMate</h2>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Search..." />
+        <button>🔍</button>
+      </div>
+      <div class="header-icons">
+        <span>🌐</span>
+        <span>🔔</span>
+        <span class="profile" id="profile-name">👤 Loading...</span>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav>
+        <ul>
+          <li><a href="/home" id="home-tab" class="active">Home</a></li>
+          <li><a href="/scan" id="scan-tab">Scan</a></li>
+          <li><a href="/history" id="history-tab">History</a></li>
+          <li><a href="/profile" id="profile-tab">Profile</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="history-container">
+      <h2>Allergy Data History</h2>
+
+      <!--Retrieve allergy data -->
+      <div id="history-list"></div>
+    </main>
+
+    <!-- Sidebar Toggle Script -->
+    <script>
+      const sidebarToggle = document.getElementById("sidebar-toggle");
+      const sidebar = document.getElementById("sidebar");
+
+      sidebarToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("show-sidebar");
+      });
+    </script>
+
+    <script type="module">
+      import {
+        getDatabase,
+        ref,
+        get,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+      const database = getDatabase();
+      const auth = getAuth();
+
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const historyList = document.getElementById("history-list");
+          const userRef = ref(database, `users/${user.uid}/reaction_days`);
+
+          try {
+            const snapshot = await get(userRef);
+            if (snapshot.exists()) {
+              const data = snapshot.val();
+              historyList.innerHTML = ""; // Clear previous data
+
+              Object.keys(data).forEach((date) => {
+                const reaction = data[date];
+
+                // Create an element for each reaction entry
+                const reactionEntry = document.createElement("div");
+                reactionEntry.classList.add("history-entry");
+                reactionEntry.innerHTML = `
+                    <h3>${date}</h3>
+                    <p><strong>Symptoms:</strong> ${reaction.symptoms}</p>
+                    <p><strong>Severity:</strong> ${reaction.severity}</p>
+                    <p><strong>Redness:</strong> ${reaction.redness}</p>
+                    <p><strong>Redness Location:</strong> ${reaction.rednessLocation}</p>
+                    <p><strong>Cause:</strong> ${reaction.cause}</p>
+                    <hr>
+                  `;
+                historyList.appendChild(reactionEntry);
+              });
+            } else {
+              historyList.innerHTML = "<p>No allergy records found.</p>";
+            }
+          } catch (error) {
+            console.error("Error fetching history:", error);
+            historyList.innerHTML = "<p>Error loading history.</p>";
+          }
+        } else {
+          document.getElementById("history-list").innerHTML =
+            "<p>Please log in to view history.</p>";
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Allergy Management App - Profile</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/home.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/profile.css') }}"
+    />
+    <!-- Firebase SDKs -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+      // Firebase Configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyAVA7atPi3-3Mw0YLCQWd-T--_v9WP2jJs",
+        authDomain: "allergimate-8a19c.firebaseapp.com",
+        databaseURL: "https://allergimate-8a19c-default-rtdb.firebaseio.com",
+        projectId: "allergimate-8a19c",
+        storageBucket: "allergimate-8a19c.firebasestorage.app",
+        messagingSenderId: "573083521508",
+        appId: "1:573083521508:web:3a9055e91a181cee9e77f1",
+        measurementId: "G-ZXDFZ94C24",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth();
+      const database = getDatabase(app);
+
+      // Fetch and display user profile name
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const userRef = ref(database, `users/${user.uid}`);
+          const snapshot = await get(userRef);
+
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            document.getElementById("profile-name").textContent = `👤 ${
+              userData.name || "User"
+            }`;
+          } else {
+            console.log("User data not found.");
+          }
+        } else {
+          document.getElementById("profile-name").textContent = "👤 Sign In";
+          console.log("No user logged in");
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header class="header">
+      <div class="header-left">
+        <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+        <h2 class="logo">AllergiMate</h2>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Search..." />
+        <button>🔍</button>
+      </div>
+      <div class="header-icons">
+        <span>🌐</span>
+        <span>🔔</span>
+        <span class="profile" id="profile-name">👤Loading... </span>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav>
+        <ul>
+          <li><a href="/home" id="home-tab" class="active">Home</a></li>
+          <li><a href="/scan" id="scan-tab">Scan</a></li>
+          <li><a href="/history" id="history-tab">History</a></li>
+          <li><a href="/profile" id="profile-tab">Profile</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="profile-container">
+      <div class="profile-card">
+        <!-- Profile Info -->
+        <h1 class="profile-title">Profile</h1>
+
+        <p id="profile-username">👤 Loading username...</p>
+        <p id="login-email">📧 Loading email...</p>
+
+        <!-- Allergies Section -->
+        <h3>Allergies</h3>
+        <div id="profile-allergy-list" class="allergy-list"></div>
+
+        <!-- Buttons -->
+        <div class="button-container">
+          <button id="logout-btn">Logout</button>
+          <button id="delete-account-btn">Delete Account</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Script for Navigation -->
+    <script>
+      const tabs = document.querySelectorAll(".sidebar a");
+      const contents = document.querySelectorAll(".tab-content");
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((item) => item.classList.remove("active"));
+          tab.classList.add("active");
+
+          contents.forEach((content) => content.classList.remove("active"));
+          document
+            .querySelector(tab.getAttribute("id").replace("-tab", ""))
+            .classList.add("active");
+        });
+      });
+      const sidebarToggle = document.getElementById("sidebar-toggle");
+      const sidebar = document.getElementById("sidebar");
+
+      // Toggle 'show-sidebar' class when the toggle button is clicked
+      sidebarToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("show-sidebar");
+      });
+    </script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+      // Firebase Configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyAVA7atPi3-3Mw0YLCQWd-T--_v9WP2jJs",
+        authDomain: "allergimate-8a19c.firebaseapp.com",
+        databaseURL: "https://allergimate-8a19c-default-rtdb.firebaseio.com",
+        projectId: "allergimate-8a19c",
+        storageBucket: "allergimate-8a19c.firebasestorage.app",
+        messagingSenderId: "573083521508",
+        appId: "1:573083521508:web:3a9055e91a181cee9e77f1",
+        measurementId: "G-ZXDFZ94C24",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth();
+      const database = getDatabase(app);
+
+      // Allergy emojis mapping
+      const allergyEmojis = {
+        Grains: "🌾",
+        Nuts: "🥜",
+        Dairy: "🥛",
+        Meat: "🍖",
+        Fruits: "🍎",
+        "Tree Pollen": "🌳",
+        Cats: "🐱",
+        Dogs: "🐶",
+        Bees: "🐝",
+        Medication: "💊",
+      };
+
+      // Function to display allergies in Profile Page
+      function displayAllergies(allergies) {
+        const allergyList = document.getElementById("profile-allergy-list");
+        allergyList.innerHTML = "";
+
+        if (!Array.isArray(allergies)) return;
+
+        allergies.forEach((allergy) => {
+          const emoji = allergyEmojis[allergy] || "⚠️"; // Default emoji
+          const allergyItem = document.createElement("div");
+          allergyItem.className = "allergy-item";
+          allergyItem.innerHTML = `<span>${emoji} ${allergy}</span>`;
+          allergyList.appendChild(allergyItem);
+        });
+      }
+
+      // Fetch and display user profile details including allergies
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const userRef = ref(database, `users/${user.uid}`);
+          const snapshot = await get(userRef);
+
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            document.getElementById("profile-name").textContent = `👤 ${
+              userData.name || "User"
+            }`;
+
+            // Display allergies
+            displayAllergies(userData.allergies || []);
+          } else {
+            console.log("User data not found.");
+          }
+        } else {
+          document.getElementById("profile-name").textContent = "👤 Sign In";
+          console.log("No user logged in");
+        }
+      });
+    </script>
+    <script>
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        window.location.href = "/login"; // Redirect to login page
+      });
+    </script>
+    <!--Delete accounr-->
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/confirmAdelete.js') }}"
+    ></script>
+  </body>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+    import {
+      getDatabase,
+      ref,
+      get,
+    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAVA7atPi3-3Mw0YLCQWd-T--_v9WP2jJs",
+      authDomain: "allergimate-8a19c.firebaseapp.com",
+      databaseURL: "https://allergimate-8a19c-default-rtdb.firebaseio.com",
+      projectId: "allergimate-8a19c",
+      storageBucket: "allergimate-8a19c.firebasestorage.app",
+      messagingSenderId: "573083521508",
+      appId: "1:573083521508:web:3a9055e91a181cee9e77f1",
+      measurementId: "G-ZXDFZ94C24",
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const database = getDatabase(app);
+
+    // Fetch and display user profile details
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userRef = ref(database, `users/${user.uid}`);
+        const snapshot = await get(userRef);
+
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+
+          // Update Username and Email in the Profile Page
+          document.getElementById("profile-username").textContent = `👤 ${
+            userData.name || "User"
+          }`;
+          document.getElementById("login-email").textContent = `📧 ${
+            user.email || "No email available"
+          }`;
+        } else {
+          console.log("User data not found.");
+        }
+      } else {
+        document.getElementById("profile-username").textContent = "👤 Sign In";
+        document.getElementById("login-email").textContent = "";
+        console.log("No user logged in");
+      }
+    });
+  </script>
+</html>

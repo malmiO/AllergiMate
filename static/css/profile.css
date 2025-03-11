@@ -1,0 +1,129 @@
+/* Profile Page Styles */
+
+/* Profile Container */
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Profile Card */
+.profile-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Profile Title */
+.profile-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #393939;
+  padding-top: 20px;
+  padding-bottom: 30px;
+}
+
+
+/* Username and Email */
+#profile-username {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+#login-email {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 15px;
+  padding-bottom: 20px;
+}
+
+/* Allergy List */
+h3 {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #5404aa;
+  padding-bottom: 10px;
+}
+
+.allergy-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.allergy-item {
+  background: #f0d7f8;
+  color: #721c24;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* Button Container */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  padding: 20px,20px,20px,20px;
+}
+
+/* General Button Styling */
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Logout Button */
+#logout-btn {
+  background: white;
+  color: #5404aa;
+  border: 2px solid #5404aa;
+}
+
+#logout-btn:hover {
+  background: #5404aa;
+  color: white;
+}
+
+/* Delete Account Button */
+#delete-account-btn {
+  background: #dc3545;
+  color: white;
+}
+
+#delete-account-btn:hover {
+  background: #a71d2a;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

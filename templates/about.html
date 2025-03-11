@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Basic Meta Tags -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About AllergiMate</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/about.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"
+    />
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="css/owl.theme.default.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
+      media="screen"
+    />
+    <style>
+      /* Header styles */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 50px;
+        background-color: black;
+      }
+
+      /* Logo */
+      .logo h1 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #d6ebf2;
+      }
+
+      .logo span {
+        color: white; /* Dot color */
+      }
+
+      /* Navigation menu */
+      nav ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      nav ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 16px;
+      }
+
+      /* Join button */
+      .btn {
+        background-color: #004080;
+        padding: 8px 16px;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        border: 2px solid transparent;
+        transition: 0.3s;
+      }
+
+      .btn:hover {
+        background-color: transparent;
+        border: 2px solid #004080;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+
+      section {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      img {
+        max-width: 500px;
+        height: auto;
+        border-radius: 10px;
+      }
+      h2 {
+        color: #00796b;
+        font-size: 24px;
+      }
+      p {
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .story-content,
+      .mission-content {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        text-align: left;
+      }
+      .story-text,
+      .mission-text {
+        width: 60%;
+      }
+      .story-content img,
+      .mission-content img {
+        width: 40%;
+        max-width: 350px;
+        border-radius: 10px;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      ul li {
+        background: url("images/checkmark.png") no-repeat left center;
+        background-size: 18px;
+        padding-left: 28px;
+        margin-bottom: 12px;
+        font-size: 16px;
+      }
+      .btn-primary {
+        background: #ff9800;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+        margin-top: 10px;
+      }
+      .btn-primary:hover {
+        background: #e68900;
+      }
+      footer {
+        text-align: center;
+        background: #00796b;
+        color: white;
+        padding: 15px;
+        margin-top: 30px;
+      }
+      .contact a {
+        color: #ff9800;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .contact a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <h1>AllergiMate<span>.</span></h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/login">Login</a></li>
+          <li><a href="/login" class="btn">Join</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="intro">
+      <img src="{{ url_for('static', filename='css/a-images/a1.jpg') }}" />
+      <h2>Welcome to AllergiMate</h2>
+      <p>
+        AllergiMate is your trusted companion for managing allergies with ease.
+        Whether you're tracking symptoms, scanning food barcodes, or monitoring
+        medications, our platform ensures you stay safe and informed at all
+        times.
+      </p>
+    </section>
+
+    <section class="mission">
+      <div class="mission-content">
+        <img src="{{ url_for('static', filename='css/a-images/a3.jpg') }}" />
+        <div class="mission-text">
+          <h2>Our Mission</h2>
+          <p>
+            Our mission is to empower individuals with allergies by providing
+            reliable tools for monitoring, managing, and preventing allergic
+            reactions through AI-driven insights and user-friendly features.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="story">
+      <div class="story-content">
+        <div class="story-text">
+          <h2>Our Story</h2>
+          <p>
+            AllergiMate was created to address the challenges of living with
+            allergies. Inspired by real-life experiences, we wanted to build a
+            solution that simplifies allergy management and improves quality of
+            life.
+          </p>
+          <a href="#" class="btn-primary">Learn More</a>
+        </div>
+        <img src="{{ url_for('static', filename='css/a-images/a2.jpg') }}" />
+      </div>
+    </section>
+
+    <section class="why-choose">
+      <h2>Why Choose AllergiMate?</h2>
+      <ul>
+        <li>AI-powered insights for better allergy tracking</li>
+        <li>Easy-to-use interface designed for everyone</li>
+        <li>Reliable database of allergen-friendly food and medicine</li>
+        <li>Regular updates with new features and improvements</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p><strong>Email:</strong> support@allergimate.com</p>
+      <p class="contact">
+        <a href="#">Facebook</a> | <a href="#">Twitter</a> |
+        <a href="#">Instagram</a>
+      </p>
+    </footer>
+  </body>
+</html>

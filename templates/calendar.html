@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Allergy Management App - Reaction Details</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/home.css') }}"
+    />
+    <!-- Firebase SDKs -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+
+      // Firebase Configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyAVA7atPi3-3Mw0YLCQWd-T--_v9WP2jJs",
+        authDomain: "allergimate-8a19c.firebaseapp.com",
+        databaseURL: "https://allergimate-8a19c-default-rtdb.firebaseio.com",
+        projectId: "allergimate-8a19c",
+        storageBucket: "allergimate-8a19c.firebasestorage.app",
+        messagingSenderId: "573083521508",
+        appId: "1:573083521508:web:3a9055e91a181cee9e77f1",
+        measurementId: "G-ZXDFZ94C24",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth();
+      const database = getDatabase(app);
+
+      // Fetch and display user profile name
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const userRef = ref(database, `users/${user.uid}`);
+          const snapshot = await get(userRef);
+
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            document.getElementById("profile-name").textContent = `👤 ${
+              userData.name || "User"
+            }`;
+          } else {
+            console.log("User data not found.");
+          }
+        } else {
+          document.getElementById("profile-name").textContent = "👤 Sign In";
+          console.log("No user logged in");
+        }
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const selectedDate = localStorage.getItem("selectedDate");
+        if (selectedDate) {
+          console.log("Selected day on new page:", selectedDate);
+          document.getElementById(
+            "display-day"
+          ).innerText = `Date : ${selectedDate}`;
+        }
+      });
+    </script>
+
+    <style>
+      .reaction-container {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        width: 70%;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        margin-left: 15%;
+        margin-right: 15%;
+        margin-top: 20px;
+      }
+      label {
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+      }
+      select,
+      input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      button {
+        background: rgb(77, 2, 134);
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header class="header">
+      <div class="header-left">
+        <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+        <h2 class="logo">AllergiMate</h2>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Search..." />
+        <button>🔍</button>
+      </div>
+      <div class="header-icons">
+        <span>🌐</span>
+        <span>🔔</span>
+        <span class="profile" id="profile-name">👤Loading... </span>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav>
+        <ul>
+          <li><a href="/home" id="home-tab" class="active">Home</a></li>
+          <li><a href="/scan" id="scan-tab">Scan</a></li>
+          <li><a href="/history" id="history-tab">History</a></li>
+          <li><a href="/profile" id="profile-tab">Profile</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="reaction-container">
+      <h2>Save Your Allergy Reactions</h2>
+      <h3 id="display-day"></h3>
+
+      <form id="allergy-form">
+        <label for="symptoms">What symptoms did you experience?</label>
+        <select id="symptoms">
+          <option value="rash">Rash</option>
+          <option value="swelling">Swelling</option>
+          <option value="breathing_difficulty">Breathing Difficulty</option>
+          <option value="other">Other</option>
+        </select>
+        <input
+          type="text"
+          id="symptoms-other"
+          placeholder="Please specify"
+          style="display: none"
+        />
+
+        <label for="severity">How severe was the reaction?</label>
+        <select id="severity">
+          <option value="mild">Mild</option>
+          <option value="moderate">Moderate</option>
+          <option value="severe">Severe</option>
+        </select>
+
+        <label for="redness">Are there any redness detected on body?</label>
+        <select id="redness">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+
+        <div id="redness-location-container" style="display: none">
+          <label for="redness-location">Which part?</label>
+          <select id="redness-location">
+            <option value="face">Face</option>
+            <option value="arms">Arms</option>
+            <option value="legs">Legs</option>
+            <option value="torso">Torso</option>
+            <option value="other">Other</option>
+          </select>
+          <input
+            type="text"
+            id="redness-other"
+            placeholder="Please specify"
+            style="display: none"
+          />
+        </div>
+
+        <label for="cause">What caused this allergy?</label>
+        <select id="cause">
+          <option value="peanuts">Peanuts</option>
+          <option value="milk">Milk</option>
+          <option value="pollen">Pollen</option>
+          <option value="seafood">Seafood</option>
+          <option value="medication">Medication</option>
+          <option value="other">Other</option>
+        </select>
+        <input
+          type="text"
+          id="cause-other"
+          placeholder="Please specify"
+          style="display: none"
+        />
+
+        <button type="submit">Submit</button>
+      </form>
+
+      <script>
+        document
+          .getElementById("symptoms")
+          .addEventListener("change", function () {
+            document.getElementById("symptoms-other").style.display =
+              this.value === "other" ? "block" : "none";
+          });
+
+        document
+          .getElementById("redness")
+          .addEventListener("change", function () {
+            document.getElementById(
+              "redness-location-container"
+            ).style.display = this.value === "yes" ? "block" : "none";
+          });
+
+        document
+          .getElementById("redness-location")
+          .addEventListener("change", function () {
+            document.getElementById("redness-other").style.display =
+              this.value === "other" ? "block" : "none";
+          });
+
+        document
+          .getElementById("cause")
+          .addEventListener("change", function () {
+            document.getElementById("cause-other").style.display =
+              this.value === "other" ? "block" : "none";
+          });
+      </script>
+    </main>
+
+    <!-- Script for Navigation -->
+    <script>
+      const tabs = document.querySelectorAll(".sidebar a");
+      const contents = document.querySelectorAll(".tab-content");
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((item) => item.classList.remove("active"));
+          tab.classList.add("active");
+
+          contents.forEach((content) => content.classList.remove("active"));
+          document
+            .querySelector(tab.getAttribute("id").replace("-tab", ""))
+            .classList.add("active");
+        });
+      });
+      const sidebarToggle = document.getElementById("sidebar-toggle");
+      const sidebar = document.getElementById("sidebar");
+
+      // Toggle 'show-sidebar' class when the toggle button is clicked
+      sidebarToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("show-sidebar");
+      });
+    </script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        set,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAVA7atPi3-3Mw0YLCQWd-T--_v9WP2jJs",
+        authDomain: "allergimate-8a19c.firebaseapp.com",
+        databaseURL: "https://allergimate-8a19c-default-rtdb.firebaseio.com",
+        projectId: "allergimate-8a19c",
+        storageBucket: "allergimate-8a19c.firebasestorage.app",
+        messagingSenderId: "573083521508",
+        appId: "1:573083521508:web:3a9055e91a181cee9e77f1",
+        measurementId: "G-ZXDFZ94C24",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const auth = getAuth();
+
+      document
+        .getElementById("allergy-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const user = auth.currentUser;
+          if (!user) {
+            alert("You must be logged in to save data.");
+            return;
+          }
+
+          // Retrieve selectedDay from localStorage
+          const selectedDate = localStorage.getItem("selectedDate");
+          if (!selectedDate) {
+            alert("Please select a date first.");
+            return;
+          }
+
+          const symptoms = document.getElementById("symptoms").value;
+          const symptomsOther = document.getElementById("symptoms-other").value;
+          const severity = document.getElementById("severity").value;
+          const redness = document.getElementById("redness").value;
+          const rednessLocation =
+            document.getElementById("redness-location").value;
+          const rednessOther = document.getElementById("redness-other").value;
+          const cause = document.getElementById("cause").value;
+          const causeOther = document.getElementById("cause-other").value;
+
+          const reactionData = {
+            symptoms: symptoms === "other" ? symptomsOther : symptoms,
+            severity: severity,
+            redness: redness,
+            rednessLocation:
+              redness === "yes"
+                ? rednessLocation === "other"
+                  ? rednessOther
+                  : rednessLocation
+                : "None",
+            cause: cause === "other" ? causeOther : cause,
+            date: selectedDate,
+          };
+
+          set(
+            ref(db, `users/${user.uid}/reaction_days/${selectedDate}`),
+            reactionData
+          )
+            .then(() => {
+              alert("Reaction details saved successfully!");
+              window.location.href = "/home"; // Adjust URL to your home page
+            })
+            .catch((error) => alert("Error: " + error.message));
+        });
+    </script>
+  </body>
+</html>

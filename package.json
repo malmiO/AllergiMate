@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "firebase": "^11.2.0",
+    "node-fetch": "^3.3.2"
+  },
+  "name": "python-flask-backend",
+  "version": "1.0.0",
+  "description": "\"# Allergimate-testing\" \r \"# Allergimate-testing\"",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/malmiO/AllergiMate.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/malmiO/AllergiMate/issues"
+  },
+  "homepage": "https://github.com/malmiO/AllergiMate#readme"
+}

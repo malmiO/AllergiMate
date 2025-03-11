@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Allergy Resources</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #f8f8f8;
+        flex-direction: column;
+      }
+      .container {
+        text-align: center;
+        background: #f0f0f0;
+        padding: 30px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 900px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      .carousel-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+      }
+      .carousel {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        gap: 20px;
+      }
+      .carousel-item {
+        flex: 0 0 300px;
+        scroll-snap-align: start;
+        text-align: center;
+      }
+      iframe,
+      .carousel-item img {
+        width: 100%;
+        height: 180px;
+        border-radius: 8px;
+      }
+      .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 50%;
+      }
+      .arrow-left {
+        left: 10px;
+      }
+      .arrow-right {
+        right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Recommended Videos</h2>
+      <div class="carousel-container">
+        <button class="arrow arrow-left" onclick="scrollCarousel(-1)">
+          &#10094;
+        </button>
+        <div class="carousel" id="videoCarousel">
+          <div class="carousel-item">
+            <iframe
+              src="https://www.youtube.com/embed/9zCH37330f8"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div class="carousel-item">
+            <iframe
+              src="https://www.youtube.com/embed/j2luxkcHqjw"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div class="carousel-item">
+            <iframe
+              src="https://www.youtube.com/embed/ncfJNfYvMlY"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div class="carousel-item">
+            <iframe
+              src="https://www.youtube.com/embed/Sc45QvlCEN0"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+        <button class="arrow arrow-right" onclick="scrollCarousel(1)">
+          &#10095;
+        </button>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Allergy-Related Articles</h2>
+      <div class="carousel-container">
+        <button class="arrow arrow-left" onclick="scrollArticleCarousel(-1)">
+          &#10094;
+        </button>
+        <div class="carousel" id="articleCarousel">
+          <div class="carousel-item">
+            <img
+              src="{{ url_for('static', filename='article-imgs/a1.png') }}"
+            />
+
+            <p>
+              How to prepare for the holidays while managing food allergies.
+            </p>
+            <a
+              href="http://impactmedicalaai.com/holiday-food-allergies-2/"
+              target="_blank"
+              >Read More</a
+            >
+          </div>
+          <div class="carousel-item">
+            <img
+              src="{{ url_for('static', filename='article-imgs/a2.png') }}"
+            />
+
+            <p>
+              Understand the effects of dust on allergies and testing options.
+            </p>
+            <a
+              href="https://www.allergyfirst.com.au/blog/dust-and-allergy-allergy-testing-brisbane-allergy-testing-gold-coast"
+              target="_blank"
+              >Read More</a
+            >
+          </div>
+          <div class="carousel-item">
+            <img
+              src="{{ url_for('static', filename='article-imgs/a3.png') }}"
+            />
+
+            <p>
+              Proven strategies to help parents manage kids' allergies
+              effectively.
+            </p>
+            <a
+              href="https://www.allergyfirst.com.au/blog/proven-strategies-for-managing-kids-allergies"
+              target="_blank"
+              >Read More</a
+            >
+          </div>
+          <div class="carousel-item">
+            <img src="article-imgs/a4.png" alt="Corn Allergy" />
+            <p>Identify and manage symptoms of corn allergy effectively.</p>
+            <a
+              href="https://www.allergyfirst.com.au/blog/corn-allergy"
+              target="_blank"
+              >Read More</a
+            >
+          </div>
+        </div>
+        <button class="arrow arrow-right" onclick="scrollArticleCarousel(1)">
+          &#10095;
+        </button>
+      </div>
+    </div>
+
+    <script>
+      let videoIndex = 0;
+      function scrollCarousel(direction) {
+        const carousel = document.getElementById("videoCarousel");
+        const items = document.querySelectorAll(
+          "#videoCarousel .carousel-item"
+        );
+        const itemWidth = items[0].offsetWidth + 20;
+        videoIndex = Math.max(
+          0,
+          Math.min(videoIndex + direction, items.length - 1)
+        );
+        carousel.style.transform = `translateX(-${videoIndex * itemWidth}px)`;
+      }
+
+      let articleIndex = 0;
+      function scrollArticleCarousel(direction) {
+        const carousel = document.getElementById("articleCarousel");
+        const items = document.querySelectorAll(
+          "#articleCarousel .carousel-item"
+        );
+        const itemWidth = items[0].offsetWidth + 20;
+        articleIndex = Math.max(
+          0,
+          Math.min(articleIndex + direction, items.length - 1)
+        );
+        carousel.style.transform = `translateX(-${articleIndex * itemWidth}px)`;
+      }
+    </script>
+  </body>
+</html>
